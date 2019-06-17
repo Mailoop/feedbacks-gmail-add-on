@@ -174,12 +174,10 @@ var ActionHandlers = {
   showSettings: function(e) {
     var settings = getSettingsForUser();
     var card = buildSettingsCard({
-      durationMinutes: settings.durationMinutes,
       startHour: settings.startHour,
       endHour: settings.endHour,
       timezone: settings.timezone,
-      searchRangeDays: settings.searchRangeDays,
-      emailBlacklist: settings.emailBlacklist
+      country: settings.country,
     });
     return CardService.newUniversalActionResponseBuilder()
       .displayAddOnCards([card])
@@ -194,12 +192,10 @@ var ActionHandlers = {
    */
   saveSettings: function(e) {
     var settings = {
-      durationMinutes: parseInt(e.formInput.duration),
       startHour: parseInt(e.formInput.start),
       endHour: parseInt(e.formInput.end),
-      timezone: parseInt(e.formInput.meetingInterval),
-      searchRangeDays: parseInt(e.formInput.searchRange),
-      emailBlacklist: _.split(e.formInput.emailBlacklist, /\s/)
+      timezone: e.formInput.timezone,
+      country: e.formInput.country,
     };
     updateSettingsForUser(settings);
     return CardService.newActionResponseBuilder()

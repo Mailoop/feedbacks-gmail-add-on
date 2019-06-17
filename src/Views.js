@@ -232,18 +232,14 @@ function buildConfirmationCard(opts) {
  * @param {number} opts.startHour - Default start of workday, as hour of day (0-23)
  * @param {number} opts.endHour - Default end of workday, as hour of day (0-23)
  * @param {string} opts.timezone - Timezone of the User
+ * @param {string} opts.country - Timezone of the User
  * @param {number} opts.searchRangeDays - How many days ahead to search calendars
  * @param {string} opts.emailBlacklist - List of email addresses to ignore
  * @return {Card}
  */
 function buildSettingsCard(opts) {
 
-
-
-  opts.timezone = ""
-
   var preferenceSection = CardService.newCardSection()
-    .setHeader("Smart deconnexion Settings")
     .addWidget(
       createTimeSelectDropdown_("Start of day", "start", opts.startHour)
     )
@@ -263,8 +259,8 @@ function buildSettingsCard(opts) {
         .setFieldName("country")
         .setTitle("Country")
         .setType(CardService.SelectionInputType.DROPDOWN)
-        .addItem("France", "FR", opts.timezone == "FR")
-        .addItem("United-Kingdom", "GB", opts.timezone == "GB")
+        .addItem("France", "FR", opts.country == "FR")
+        .addItem("United-Kingdom", "GB", opts.country == "GB")
     )
 
   preferenceSection.addWidget(
@@ -274,14 +270,10 @@ function buildSettingsCard(opts) {
           .setText("Save")
           .setOnClickAction(createAction_("saveSettings", {}))
       )
-      .addButton(
-        CardService.newTextButton()
-          .setText("Reset to defaults")
-          .setOnClickAction(createAction_("resetSettings", {}))
-      )
   );
+
   return CardService.newCardBuilder()
-    .setHeader(CardService.newCardHeader().setTitle("Settings"))
+    .setHeader(CardService.newCardHeader().setTitle("Smart deconnexion Settings"))
     .addSection(preferenceSection)
     .build();
 }
