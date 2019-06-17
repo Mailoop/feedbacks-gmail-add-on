@@ -36,7 +36,7 @@ function getSettingsForUser() {
     durationMintutes: DEFAULT_DURATION_MINUTES,
     startHour: DEFAULT_START_HOUR,
     endHour: DEFAULT_END_HOUR,
-    meetingIntervalMinutes: DEFAULT_MEETING_INTERVAL_MINUTES,
+    timezone: DEFAULT_TIMEZONE,
     searchRangeDays: DEFAULT_SEARCH_RANGE_DAYS,
     emailBlacklist: ""
   });

@@ -33,7 +33,7 @@ var SchedulerPrototype = {
   allowWeekends: DEFAULT_ALLOW_WEEKENDS,
   startHour: DEFAULT_START_HOUR,
   endHour: DEFAULT_END_HOUR,
-  meetingIntervalMinutes: DEFAULT_MEETING_INTERVAL_MINUTES,
+  timezone: DEFAULT_TIMEZONE,
   timezone: Session.getScriptTimeZone(),
 
   /**
@@ -150,7 +150,7 @@ var SchedulerPrototype = {
         }
 
         var nextStart = moment(nextPeriod.start)
-          .add(this.meetingIntervalMinutes, "minutes")
+          .add(this.timezone, "minutes")
           .valueOf();
         nextPeriod = this.createAdjustedPeriod_(nextStart);
       }
@@ -176,7 +176,7 @@ var SchedulerPrototype = {
   createAdjustedPeriod_: function(startTime) {
     // Round up and make the time clean
     var start = moment(startTime).tz(this.timezone);
-    start.minutes(roundUpToNearest_(start.minutes(), this.meetingIntervalMinutes))
+    start.minutes(roundUpToNearest_(start.minutes(), this.timezone))
       .seconds(0)
       .milliseconds(0);
 
@@ -241,7 +241,7 @@ var SchedulerPrototype = {
       "allowWeekends",
       "startHour",
       "endHour",
-      "meetingIntervalMinutes",
+      "timezone",
       "timezone",
       "timeMin_",
       "timeMax_"
@@ -256,7 +256,7 @@ var SchedulerPrototype = {
  * @param {number} opts.durationMinutes - Default meeting duration in minutes
  * @param {number} opts.startHour - Default start of workday, as hour of day (0-23)
  * @param {number} opts.endHour - Default end of workday, as hour of day (0-23)
- * @param {number} opts.meetingIntervalMinutes - Minute mark of the hour meetings can start on (15, 30, 60)
+ * @param {number} opts.timezone - Minute mark of the hour meetings can start on (15, 30, 60)
  * @param {number} opts.searchRangeDays - How many days ahead to search calendars
  * @param {boolean} opts.allowWeekends - Whether or not to schedule on weekends.
  * @param {string} opts.timezone - User's timezone.

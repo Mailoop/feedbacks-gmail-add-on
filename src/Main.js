@@ -19,7 +19,7 @@ var DEFAULT_MAX_FREE_TIMES = 5;
 var DEFAULT_START_HOUR = 8; // 8 AM
 var DEFAULT_END_HOUR = 18; // 6 PM
 var DEFAULT_ALLOW_WEEKENDS = false;
-var DEFAULT_MEETING_INTERVAL_MINUTES = 30;
+var DEFAULT_TIMEZONE = "Europe/Paris";
 var DEFAULT_DEADLINE_SECONDS = 20;
 var WEEKDAYS = [1, 2, 3, 4, 5]; // Weekeday values used by momentjs
 

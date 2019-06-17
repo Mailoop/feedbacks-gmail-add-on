@@ -90,7 +90,7 @@ var ActionHandlers = {
       endHour: state.endHour,
       timezone: state.timezone,
       emailAddresses: state.emailAddresses,
-      meetingIntervalMinutes: settings.meetingIntervalMinutes,
+      timezone: settings.timezone,
       deadlineMonitor: deadlineMonitor
     });
 
@@ -177,7 +177,7 @@ var ActionHandlers = {
       durationMinutes: settings.durationMinutes,
       startHour: settings.startHour,
       endHour: settings.endHour,
-      meetingIntervalMinutes: settings.meetingIntervalMinutes,
+      timezone: settings.timezone,
       searchRangeDays: settings.searchRangeDays,
       emailBlacklist: settings.emailBlacklist
     });
@@ -197,7 +197,7 @@ var ActionHandlers = {
       durationMinutes: parseInt(e.formInput.duration),
       startHour: parseInt(e.formInput.start),
       endHour: parseInt(e.formInput.end),
-      meetingIntervalMinutes: parseInt(e.formInput.meetingInterval),
+      timezone: parseInt(e.formInput.meetingInterval),
       searchRangeDays: parseInt(e.formInput.searchRange),
       emailBlacklist: _.split(e.formInput.emailBlacklist, /\s/)
     };
@@ -224,7 +224,7 @@ var ActionHandlers = {
       durationMinutes: settings.durationMinutes,
       startHour: settings.startHour,
       endHour: settings.endHour,
-      meetingIntervalMinutes: settings.meetingIntervalMinutes,
+      timezone: settings.timezone,
       searchRangeDays: settings.searchRangeDays,
       emailBlacklist: settings.emailBlacklist
     });

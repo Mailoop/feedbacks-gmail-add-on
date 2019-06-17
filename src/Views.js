@@ -24,6 +24,11 @@
  * @return {Card}
  */
 
+var behaviorIconUrl = function(behaviorName) {
+  return('https://mailoop.blob.core.windows.net/static/Assets/Images/' + behaviorName + '_64.png')
+}  
+  
+
 function notificationCallback() {
   return CardService.newActionResponseBuilder()
     .setNotification(CardService.newNotification()
@@ -45,8 +50,8 @@ function buildSearchCard(opts) {
     )
 
   var behaviors = [
-    { ref_name: "coucou" },
-    { ref_name: "salut" }
+    { ref_name: "teams" },
+    { ref_name: "reactif" }
   ]
 
   const iconUrl = "https://cdn2.iconfinder.com/data/icons/medical-services-2/256/Health_Tests-512.png"
@@ -63,11 +68,11 @@ function buildSearchCard(opts) {
     feedbacksSections.push(
       CardService.newCardSection()
       .addWidget(CardService.newKeyValue()
-        .setIconUrl(iconUrl)
+        .setIconUrl(behaviorIconUrl(behavior.ref_name))
         .setContent("")
         .setOnClickAction(onVoteAction)
         .setButton(CardService.newTextButton()
-          .setText("👁️ 2")
+          .setText(behavior.ref_name)
           .setOnClickAction(onVoteAction))
       )
     )
@@ -130,7 +135,7 @@ function buildSearchCard(opts) {
  * @param {boolean} opts.showPartialResponseWarning - True if should warn not all calendars were searched
  * @param {TimePeriod[]} opts.freeTimes - Candidate meeting times
  * @param {string} opts.subject - Default event subject
- * @param {string} opts.timezone - User's timezone
+ * @param {any} opts.timezone - User's timezone
  * @param {Object} opts.state - State to pass on to subsequent actions
  * @return {Card}
  */
@@ -226,51 +231,41 @@ function buildConfirmationCard(opts) {
  * @param {number} opts.durationMinutes - Default meeting duration in minutes
  * @param {number} opts.startHour - Default start of workday, as hour of day (0-23)
  * @param {number} opts.endHour - Default end of workday, as hour of day (0-23)
- * @param {number} opts.meetingIntervalMinutes - Minute mark of the hour meetings can start on (15, 30, 60)
+ * @param {string} opts.timezone - Timezone of the User
  * @param {number} opts.searchRangeDays - How many days ahead to search calendars
  * @param {string} opts.emailBlacklist - List of email addresses to ignore
  * @return {Card}
  */
 function buildSettingsCard(opts) {
+
+
+
+  opts.timezone = ""
+
   var preferenceSection = CardService.newCardSection()
-    .setHeader("Settings")
-    .addWidget(
-      createDurationDropdown_(
-        "Default meeting duration",
-        "duration",
-        opts.durationMinutes
-      )
-    )
+    .setHeader("Smart deconnexion Settings")
     .addWidget(
       createTimeSelectDropdown_("Start of day", "start", opts.startHour)
     )
     .addWidget(createTimeSelectDropdown_("End of day", "end", opts.endHour))
+      
     .addWidget(
       CardService.newSelectionInput()
-        .setFieldName("meetingInterval")
-        .setTitle("Meetings start on:")
-        .setType(CardService.SelectionInputType.DROPDOWN)
-        .addItem("Quarter hour", 15, opts.meetingIntervalMinutes == 15)
-        .addItem("Half hour", 30, opts.meetingIntervalMinutes == 30)
-        .addItem("Hour", 60, opts.meetingIntervalMinutes == 60)
+      .setFieldName("timezone")
+      .setTitle("Timezone")
+      .setType(CardService.SelectionInputType.DROPDOWN)
+      .addItem("Paris", "Europe/Paris", opts.timezone == "Europe/Paris")
+      .addItem("London", "Europe/London", opts.timezone == "Europe/London")
     )
+
     .addWidget(
       CardService.newSelectionInput()
-        .setFieldName("searchRange")
-        .setTitle("Search range:")
+        .setFieldName("country")
+        .setTitle("Country")
         .setType(CardService.SelectionInputType.DROPDOWN)
-        .addItem("7 days", 7, opts.searchRangeDays == 7)
-        .addItem("14 days", 14, opts.searchRangeDays == 14)
-        .addItem("21 days", 21, opts.searchRangeDays == 21)
-        .addItem("28 days", 28, opts.searchRangeDays == 28)
+        .addItem("France", "FR", opts.timezone == "FR")
+        .addItem("United-Kingdom", "GB", opts.timezone == "GB")
     )
-    .addWidget(
-      CardService.newTextInput()
-        .setFieldName("emailBlacklist")
-        .setMultiline(true)
-        .setTitle("Email addresses to ignore")
-        .setValue(opts.emailBlacklist)
-    );
 
   preferenceSection.addWidget(
     CardService.newButtonSet()

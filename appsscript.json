@@ -15,8 +15,11 @@
     "https://www.googleapis.com/auth/calendar"
   ],
   "gmail": {
-    "name": "Meeting assistant",
-    "logoUrl": "https://cdn.rawgit.com/webdog/octicons-png/bd02e5bc/clock.svg.png",
+    "name": "Mailoop",
+    "logoUrl": "https://mailoop.blob.core.windows.net/testing/Assets/Images/mailoop_icon_2_64.png",
+    "primaryColor": "#ED7D31",
+    "secondaryColor": "#C01900",
+    "version": "TRUSTED_TESTER_V2",
     "contextualTriggers": [{
       "unconditional": {},
       "onTriggerFunction": "handleShowScheduler"
