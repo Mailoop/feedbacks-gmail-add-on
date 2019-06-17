@@ -54,19 +54,23 @@ function buildSearchCard(opts) {
   var feedbacksSections = []
   _.each(behaviors, function (behavior) {
     var onVoteAction = createAction_('notificationCallback')
+    
+    CardService.newAction().setFunctionName('notificationCallback')
 
     feedbacksSections.push(
       CardService.newCardSection()
       .addWidget(CardService.newKeyValue()
         .setIconUrl(behaviorIconUrl(behavior.ref_name))
-        .setContent("")
+        .setContent("Reactif")
         .setOnClickAction(onVoteAction)
-        .setButton(CardService.newTextButton()
-          .setText(behavior.ref_name)
-          .setOnClickAction(onVoteAction)
+        .setSwitch(CardService.newSwitch()
+          .setFieldName("form_input_switch_key")
+          .setValue("form_input_switch_value")
+          .setOnChangeAction(CardService.newAction()
+            .setFunctionName("handleSwitchChange")))
       )
     )
-  )})
+  })
 
   // <= for example
 

@@ -27,10 +27,10 @@ var ActionHandlers = {
 
 
   notificationCallback: function() {
-  return CardService.newActionResponseBuilder()
-    .setNotification(CardService.newNotification()
-      .setText("Some info to display to user"))
-    .build();
+  //return CardService.newActionResponseBuilder()
+    //.setNotification(CardService.newNotification()
+      //.setText("Some info to display to user"))
+  //  .build();
   },
   showSearchForm: function(e) {
     var settings = getSettingsForUser();
