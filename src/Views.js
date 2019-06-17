@@ -28,14 +28,6 @@ var behaviorIconUrl = function(behaviorName) {
   return('https://mailoop.blob.core.windows.net/static/Assets/Images/' + behaviorName + '_64.png')
 }  
   
-
-function notificationCallback() {
-  return CardService.newActionResponseBuilder()
-    .setNotification(CardService.newNotification()
-      .setText("Some info to display to user"))
-    .build();
-}
-
 function buildSearchCard(opts) {
 
   var smartDeconnexionSection = CardService.newCardSection()
@@ -58,13 +50,11 @@ function buildSearchCard(opts) {
 
   // ...
 
-  var onVoteAction = CardService.newAction().setFunctionName('notificationCallback')
-  var action = onVoteAction
-
-  var button = CardService.newTextButton().setText('Create notification').setOnClickAction(onVoteAction)
   
   var feedbacksSections = []
   _.each(behaviors, function (behavior) {
+    var onVoteAction = createAction_('notificationCallback')
+
     feedbacksSections.push(
       CardService.newCardSection()
       .addWidget(CardService.newKeyValue()
@@ -73,43 +63,10 @@ function buildSearchCard(opts) {
         .setOnClickAction(onVoteAction)
         .setButton(CardService.newTextButton()
           .setText(behavior.ref_name)
-          .setOnClickAction(onVoteAction))
+          .setOnClickAction(onVoteAction)
       )
     )
-  })
-
-  // For Exmaple => 
-  var preferenceSection = CardService.newCardSection()
-    .setHeader("Preferences")
-    .addWidget(
-      createDurationDropdown_("Duration", "duration", opts.durationMinutes)
-    )
-    .addWidget(
-      createTimeSelectDropdown_("Start after", "start", opts.startHour)
-    )
-    .addWidget(createTimeSelectDropdown_("End before", "end", opts.endHour));
-
-  var participantSection = CardService.newCardSection().setHeader(
-    "Participants"
-  );
-
-  var checkboxGroup = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.CHECK_BOX)
-    .setFieldName("participants");
-  _.each(opts.emailAddresses, function(email) {
-    checkboxGroup.addItem(email, email, true);
-  });
-  participantSection.addWidget(checkboxGroup);
-
-  participantSection.addWidget(
-    CardService.newButtonSet().addButton(
-      CardService.newTextButton()
-        .setText("Find times")
-        .setOnClickAction(
-          createAction_("findTimes", { state: JSON.stringify(opts.state) })
-        )
-    )
-  );
+  )})
 
   // <= for example
 
@@ -123,8 +80,6 @@ function buildSearchCard(opts) {
   cardBuilder = CardService.newCardBuilder()
   cardBuilder.addSection(smartDeconnexionSection)
   addSections(cardBuilder, feedbacksSections)
-    .addSection(preferenceSection)
-    .addSection(participantSection)
   return cardBuilder.build();
 }
 
@@ -190,7 +145,7 @@ function buildResultsCard(opts) {
     .build();
 }
 
-/**
+/**on
  * Builds a card that displays confirmation of the event.
  *
  * @param {Object} opts Parameters for building the card
