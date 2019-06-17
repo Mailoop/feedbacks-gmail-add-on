@@ -1,0 +1,4 @@
+.DS_store/
+.gasp.json
+dist
+node_modules/
