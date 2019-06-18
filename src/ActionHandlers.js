@@ -29,7 +29,7 @@ var ActionHandlers = {
   notificationCallback: function() {
   return CardService.newActionResponseBuilder()
     .setNotification(CardService.newNotification()
-      .setText("Some info to display to user"))
+      .setText("Mailoop a enregistré votre feedback"))
     .build();
   },
   showSearchForm: function(e) {
