@@ -54,8 +54,6 @@ function buildSearchCard(opts) {
   var feedbacksSections = []
   _.each(behaviors, function (behavior) {
     var onVoteAction = createAction_('notificationCallback')
-    
-    CardService.newAction().setFunctionName('notificationCallback')
 
     feedbacksSections.push(
       CardService.newCardSection()
@@ -66,8 +64,7 @@ function buildSearchCard(opts) {
         .setSwitch(CardService.newSwitch()
           .setFieldName("form_input_switch_key")
           .setValue("form_input_switch_value")
-          .setOnChangeAction(CardService.newAction()
-            .setFunctionName("handleSwitchChange")))
+          .setOnChangeAction(onVoteAction))
       )
     )
   })
