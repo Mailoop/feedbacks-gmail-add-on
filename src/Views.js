@@ -41,10 +41,21 @@ function buildSearchCard(opts) {
             .setFunctionName("handleSwitchChange")))
     )
 
+
   var behaviors = [
-    { ref_name: "teams" },
-    { ref_name: "reactif" }
+    { ref_name: "positif", priority: 1, family: 1, category: "message", translations: { "en": { "name": "Positive effect", "description": "I feel this email contributes positively to my work day." }, "fr": { "name": "Positive attitude", "description": "Cet e-mail fait du bien et contribue positivement à ma journée de travail !" } } },
+    { ref_name: "ordre", priority: 0, family: 1, category: "meeting", translations: { "fr": { "name": "Ordre du jour", "description": "Il n'y avait pas d'ordre du jour" } } },
+    { ref_name: "meeting_efficace", priority: undefined, family: 1, category: "meeting", translations: { "en": { "name": "Efficient", "description": "We succeed in answering efficiently to the agenda thanks to this meeting." }, "fr": { "name": "Efficace", "description": "Cette réunion a permis de traiter efficacement les questions identifiées en amont." } } },
+
+    { ref_name: "parlons-en", priority: 4, family: 0, category: "message", translations: { "en": { "name": "Let's talk!", "description": "I would have preferred to talk about this face to face." }, "fr": { "name": "Parlons-en !", "description": "J'aurais préféré avoir cette conversation de vive voix pour limiter mes e-mails !" } } },
+    { ref_name: "parole", priority: 0, family: 0, category: "meeting", translations: { "fr": { "name": "Laissez moi parler !", "description": "Je n'ai pas pu m'exprimer librement au cours de la réunion" }, "en": { "name": "Let me speak!", "description": "I did not have the opportunity to express my opinions during this meeting" } } },
+    { ref_name: "media_teams", priority: 6, family: 0, category: "message", translations: { "en": { "name": "Share it on Teams", "description": "I would prefer to find this information on Teams and not by email." }, "fr": { "name": "Mets-le sur Teams", "description": "Je pense que cette discussion aurait intérêt à se passer sur Teams." } } },
+
+    { ref_name: "sexiste", priority: undefined, family: -1, category: "message", translations: { "fr": { "name": "Sexiste", "description": "Le mail comporte des propos sexiste." } } },
+    { ref_name: "media", priority: undefined, family: -1, category: "message", translations: { "fr": { "name": "Media", "description": "Le mail n'est pas la bonne solution de communication pour cet échange." } } },
+    { ref_name: "horaires", priority: 1, family: -1, category: "message", translations: { "en": { "name": "Outside working hours", "description": "Receing this email ouside of my working hours made me uncomfortable" }, "fr": { "name": "Hors des horaires", "description": "J'ai été gêné par cet e-mail envoyé en dehors de mes horaires de travail" } } }
   ]
+
 
   const iconUrl = "https://cdn2.iconfinder.com/data/icons/medical-services-2/256/Health_Tests-512.png"
 
@@ -59,7 +70,7 @@ function buildSearchCard(opts) {
       CardService.newCardSection()
       .addWidget(CardService.newKeyValue()
         .setIconUrl(behaviorIconUrl(behavior.ref_name))
-        .setContent("Reactif")
+        .setContent(behavior.ref_name)
         .setOnClickAction(onVoteAction)
         .setSwitch(CardService.newSwitch()
           .setFieldName("form_input_switch_key")
