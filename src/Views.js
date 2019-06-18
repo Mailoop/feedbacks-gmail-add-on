@@ -71,7 +71,7 @@ function buildSearchCard(opts) {
       .addWidget(CardService.newKeyValue()
         .setIconUrl(behaviorIconUrl(behavior.ref_name))
         .setContent(behavior.ref_name)
-        .setOnClickAction(onVoteAction)
+        //.setOnClickAction(onVoteAction)
         .setSwitch(CardService.newSwitch()
           .setFieldName("form_input_switch_key")
           .setValue("form_input_switch_value")
