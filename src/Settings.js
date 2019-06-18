@@ -20,10 +20,6 @@ var SETTINGS_KEY = "settings";
  * 
  * @return {string}
  */
-function getUserTimezone() {
-  var result = Calendar.Settings.get("timezone");
-  return result.value ? result.value : Session.getScriptTimeZone();
-}
 
 /**
  * Get the effective settings for the current user.

@@ -119,7 +119,7 @@ function buildSearchCard(opts) {
       CardService.newCardSection()
         .addWidget(CardService.newKeyValue()
           .setIconUrl(behaviorIconUrl(behavior.ref_name))
-          .setContent(behavior.ref_name)
+          .setContent(behavior.translations.fr.name)
           //.setOnClickAction(onVoteAction)
           .setSwitch(CardService.newSwitch()
             .setFieldName("form_input_switch_key")
@@ -147,8 +147,28 @@ function buildSearchCard(opts) {
 
   cardBuilder = CardService.newCardBuilder()
   cardBuilder.addSection(smartDeconnexionSection)
+
+  cardBuilder.addSection(
+    CardService.newCardSection().addWidget(
+      CardService.newTextParagraph().setText("Positif 🙂")
+      )
+  )
   addSections(cardBuilder, positiveFeedbacksSections)
-  addSections(cardBuilder, neutralFeedbacksSections) 
+
+
+  cardBuilder.addSection(
+    CardService.newCardSection().addWidget(
+      CardService.newTextParagraph().setText("Neutre 😐")
+    )
+  )
+  addSections(cardBuilder, neutralFeedbacksSections)
+
+
+  cardBuilder.addSection(
+    CardService.newCardSection().addWidget(
+      CardService.newTextParagraph().setText("Negatif 🙁")
+    )
+  )
   addSections(cardBuilder, negativeFeedbacksSections)  
   return cardBuilder.build();
 }

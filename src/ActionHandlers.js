@@ -46,7 +46,7 @@ var ActionHandlers = {
       state: {
         messageId: e.messageId,
         subject: subject,
-        timezone: getUserTimezone()
+        timezone: "Europe/Paris"
       }
     };
     var card = buildSearchCard(opts);
