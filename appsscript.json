@@ -9,11 +9,18 @@
   },
   "exceptionLogging": "CLOUD",
   "oauthScopes": [
-    "https://www.googleapis.com/auth/script.storage",
-    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/gmail.addons.current.action.compose",
     "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
-    "https://www.googleapis.com/auth/calendar"
+    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/script.storage"
   ],
+    "urlFetchWhitelist": [
+      "https://51eddb5e.ngrok.io/",
+      "https://app.mailoop.com/api/v2/",
+      "https://staging.app.mailoop.com/api/v2/"
+    ],
   "gmail": {
     "name": "Mailoop",
     "logoUrl": "https://mailoop.blob.core.windows.net/testing/Assets/Images/mailoop_icon_2_64.png",

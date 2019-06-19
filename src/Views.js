@@ -30,6 +30,12 @@ var behaviorIconUrl = function(behaviorName) {
   
 function buildSearchCard(opts) {
 
+  var behaviors = JSON.parse(opts.behaviors).filter(function (vote) {
+    return (vote.category === "message");
+  })
+
+  var votes = JSON.parse(opts.votes)
+
   var smartDeconnexionSection = CardService.newCardSection()
     .addWidget(
       CardService.newKeyValue()
@@ -40,21 +46,6 @@ function buildSearchCard(opts) {
           .setOnChangeAction(CardService.newAction()
             .setFunctionName("handleSwitchChange")))
     )
-
-
-  var behaviors = [
-    { ref_name: "positif", priority: 1, family: 1, category: "message", translations: { "en": { "name": "Positive effect", "description": "I feel this email contributes positively to my work day." }, "fr": { "name": "Positive attitude", "description": "Cet e-mail fait du bien et contribue positivement à ma journée de travail !" } } },
-    { ref_name: "ordre", priority: 0, family: 1, category: "meeting", translations: { "fr": { "name": "Ordre du jour", "description": "Il n'y avait pas d'ordre du jour" } } },
-    
-    { ref_name: "parlons-en", priority: 4, family: 0, category: "message", translations: { "en": { "name": "Let's talk!", "description": "I would have preferred to talk about this face to face." }, "fr": { "name": "Parlons-en !", "description": "J'aurais préféré avoir cette conversation de vive voix pour limiter mes e-mails !" } } },
-    { ref_name: "meeting_efficace", priority: undefined, family: 1, category: "meeting", translations: { "en": { "name": "Efficient", "description": "We succeed in answering efficiently to the agenda thanks to this meeting." }, "fr": { "name": "Efficace", "description": "Cette réunion a permis de traiter efficacement les questions identifiées en amont." } } },
-    { ref_name: "parole", priority: 0, family: 0, category: "meeting", translations: { "fr": { "name": "Laissez moi parler !", "description": "Je n'ai pas pu m'exprimer librement au cours de la réunion" }, "en": { "name": "Let me speak!", "description": "I did not have the opportunity to express my opinions during this meeting" } } },
-    { ref_name: "sexiste", priority: undefined, family: -1, category: "message", translations: { "fr": { "name": "Sexiste", "description": "Le mail comporte des propos sexiste." } } },
-    { ref_name: "media_teams", priority: 6, family: 0, category: "message", translations: { "en": { "name": "Share it on Teams", "description": "I would prefer to find this information on Teams and not by email." }, "fr": { "name": "Mets-le sur Teams", "description": "Je pense que cette discussion aurait intérêt à se passer sur Teams." } } },
-
-    { ref_name: "media", priority: undefined, family: -1, category: "message", translations: { "fr": { "name": "Media", "description": "Le mail n'est pas la bonne solution de communication pour cet échange." } } },
-    { ref_name: "horaires", priority: 1, family: -1, category: "message", translations: { "en": { "name": "Outside working hours", "description": "Receing this email ouside of my working hours made me uncomfortable" }, "fr": { "name": "Hors des horaires", "description": "J'ai été gêné par cet e-mail envoyé en dehors de mes horaires de travail" } } }
-  ]
 
   const iconUrl = "https://cdn2.iconfinder.com/data/icons/medical-services-2/256/Health_Tests-512.png"
 
@@ -71,10 +62,37 @@ function buildSearchCard(opts) {
     return (behavior.family === -1);
   });
 
-  
   var positiveFeedbacksSections = []
   _.each(positiveBehavior, function (behavior) {
-    var onVoteAction = createAction_('notificationCallback')
+    var vote = Boolean((votes.filter(function (vote) {
+      Logger.log("")
+      Logger.log(Math.floor(vote.behavior_id).toString(10))
+      Logger.log(Math.floor(behavior.id).toString(10))
+      Logger.log(Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10))
+      return (Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10));
+    })))
+    Logger.log("")
+    Logger.log("vote")
+    Logger.log(vote)
+    var voted
+
+    Logger.log(vote)
+    if (vote.length > 0 ) {
+      voted = true
+    } else {
+      voted = false
+    }
+
+
+
+
+    var onVoteAction = createAction_('sendUserVote', {
+      date: opts.date,
+      refName: behavior.ref_name,
+      to: opts.to,
+      internetMessageId: opts.internetMessageId,
+      from: opts.from,
+    })
 
     positiveFeedbacksSections.push(
       CardService.newCardSection()
@@ -83,8 +101,9 @@ function buildSearchCard(opts) {
         .setContent(behavior.ref_name)
         //.setOnClickAction(onVoteAction)
         .setSwitch(CardService.newSwitch()
-          .setFieldName("form_input_switch_key")
-          .setValue("form_input_switch_value")
+          .setSelected(voted)
+          .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name  )
+          .setValue(voted)
           .setOnChangeAction(onVoteAction))
       )
     )
@@ -93,7 +112,7 @@ function buildSearchCard(opts) {
 
   var neutralFeedbacksSections = []
   _.each(neutralBehavior, function (behavior) {
-    var onVoteAction = createAction_('notificationCallback')
+    var onVoteAction = createAction_('sendUserVote')
 
     neutralFeedbacksSections.push(
       CardService.newCardSection()
@@ -113,7 +132,7 @@ function buildSearchCard(opts) {
 
   var negativeFeedbacksSections = []
   _.each(negativeBehavior, function (behavior) {
-    var onVoteAction = createAction_('notificationCallback')
+    var onVoteAction = createAction_('sendUserVote')
 
     negativeFeedbacksSections.push(
       CardService.newCardSection()
@@ -169,7 +188,8 @@ function buildSearchCard(opts) {
       CardService.newTextParagraph().setText("Negatif 🙁")
     )
   )
-  addSections(cardBuilder, negativeFeedbacksSections)  
+
+  addSections(cardBuilder, negativeFeedbacksSections)
   return cardBuilder.build();
 }
 

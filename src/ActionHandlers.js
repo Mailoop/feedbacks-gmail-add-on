@@ -17,6 +17,9 @@
  *
  * @constant
  */
+
+var HOST = "51eddb5e.ngrok.io"
+
 var ActionHandlers = {
   /**
    * Displays the meeting search card.
@@ -25,34 +28,80 @@ var ActionHandlers = {
    * @return {UniversalActionResponse}
    */
 
-
-  notificationCallback: function() {
-  return CardService.newActionResponseBuilder()
-    .setNotification(CardService.newNotification()
-      .setText("Mailoop a enregistré votre feedback"))
-    .build();
-  },
-  showSearchForm: function(e) {
+  showSearchForm: function (e) {
     var settings = getSettingsForUser();
     var message = getCurrentMessage(e);
     var people = extractRecipients(message, settings.emailBlacklist);
     var subject = message.getSubject();
+    var messageDate = message.getDate()
+    var internetMessageId = message.getHeader("Message-ID")
+
+    var base64InternetMessageId = Utilities.base64Encode(internetMessageId)
+
+    var behaviorsUrl = 'https://'+ HOST +'/api/v2/behaviors_groups/default_onboarding'
+    var behaviors = UrlFetchApp.fetch(behaviorsUrl)
+
+    var url = 'https://' + HOST +'/api/v2/emails/' + 
+      base64InternetMessageId
+      + "/votes?X-Google-Oauth-Token=" + ScriptApp.getOAuthToken()
+      var votes = UrlFetchApp.fetch(url)
+
 
     var opts = {
       startHour: settings.startHour,
       endHour: settings.endHour,
       durationMinutes: settings.durationMinutes,
-      emailAddresses: people,
+      date: JSON.stringify(messageDate),
+      to: JSON.stringify(people),
+      from: message.getTo(),
+      internetMessageId: internetMessageId,
+      e: JSON.stringify(e),
+      votes : votes,
+      behaviors: behaviors,
+
       state: {
         messageId: e.messageId,
         subject: subject,
-        timezone: "Europe/Paris"
+        timezone: "Europe/Paris",
       }
     };
     var card = buildSearchCard(opts);
     return [card];
   },
 
+
+  sendUserVote: function(e) {
+
+    
+    
+    response = UrlFetchApp.fetch(
+      'https://' + HOST +'/api/v2/votes', {
+        'method': 'post',
+        'contentType': 'application/json',
+
+        'payload': JSON.stringify({
+          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+          'vote': {
+            'behavior_ref_name': e.parameters.refName,
+            'email': {
+              'to': e.parameters.to,
+              'from': e.parameters.from,
+              'date': e.parameters.date ,
+              'internet_message_id': e.parameters.internetMessageId,
+            }
+          }})
+      })
+    return CardService.newActionResponseBuilder()
+      .setNotification(CardService.newNotification()
+        .setText("Mailoop a enregistré votre feedback"))
+      .build();
+  },
+  notificationCallback: function() {
+  return CardService.newActionResponseBuilder()
+    .setNotification(CardService.newNotification()
+      .setText("Mailoop a enregistré votre feedback"))
+    .build();
+  },
   /**
    * Searches for free times and displays a card with the results.
    *
