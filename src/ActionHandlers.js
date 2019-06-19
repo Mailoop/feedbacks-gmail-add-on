@@ -18,7 +18,7 @@
  * @constant
  */
 
-var HOST = "51eddb5e.ngrok.io"
+var HOST = "staging.app.mailoop.com"
 
 var ActionHandlers = {
   /**
@@ -76,6 +76,7 @@ var ActionHandlers = {
     
     response = UrlFetchApp.fetch(
       'https://' + HOST +'/api/v2/votes', {
+        'muteHttpExceptions' : true,
         'method': 'post',
         'contentType': 'application/json',
 

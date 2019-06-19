@@ -64,13 +64,13 @@ function buildSearchCard(opts) {
 
   var positiveFeedbacksSections = []
   _.each(positiveBehavior, function (behavior) {
-    var vote = Boolean((votes.filter(function (vote) {
+    var vote = (votes.filter(function (vote) {
       Logger.log("")
       Logger.log(Math.floor(vote.behavior_id).toString(10))
       Logger.log(Math.floor(behavior.id).toString(10))
       Logger.log(Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10))
       return (Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10));
-    })))
+    }))
     Logger.log("")
     Logger.log("vote")
     Logger.log(vote)
@@ -82,6 +82,8 @@ function buildSearchCard(opts) {
     } else {
       voted = false
     }
+    Logger.log("voted")
+    Logger.log(voted)
 
 
 
