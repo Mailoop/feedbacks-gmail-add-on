@@ -257,6 +257,20 @@ var ActionHandlers = {
       timezone: e.formInput.timezone,
       country: e.formInput.country,
     };
+
+    UrlFetchApp.fetch(
+      'https://' + HOST + '/api/v2/employees/me@me.com/deconnexion_settings', {
+        'method': 'post',
+        'contentType': 'application/json',
+
+        'payload': JSON.stringify({
+          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+          'start_hour' : settings.startHour,
+          'end_hour': settings.endHour,
+          'time_zone': settings.timezone,
+          'country' : settings.country,
+        })
+      })
     updateSettingsForUser(settings);
     return CardService.newActionResponseBuilder()
       .setNavigation(CardService.newNavigation().popCard())
