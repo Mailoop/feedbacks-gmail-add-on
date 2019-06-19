@@ -72,26 +72,28 @@ var ActionHandlers = {
 
   sendUserVote: function(e) {
 
-    
-    
-    response = UrlFetchApp.fetch(
-      'https://' + HOST +'/api/v2/votes', {
-        'muteHttpExceptions' : true,
-        'method': 'post',
-        'contentType': 'application/json',
+    if (e.parameters.onVoteCreate) {
 
-        'payload': JSON.stringify({
-          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
-          'vote': {
-            'behavior_ref_name': e.parameters.refName,
-            'email': {
-              'to': e.parameters.to,
-              'from': e.parameters.from,
-              'date': e.parameters.date ,
-              'internet_message_id': e.parameters.internetMessageId,
-            }
-          }})
-      })
+      UrlFetchApp.fetch(
+        'https://' + HOST +'/api/v2/votes/execute', {
+          'method': 'post',
+          'contentType': 'application/json',
+
+          'payload': JSON.stringify({
+            'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+            'create_action': e.parameters.onVoteCreate,
+            'vote': {
+              'behavior_ref_name': e.parameters.refName,
+              'email': {
+                'to': e.parameters.to,
+                'from': e.parameters.from,
+                'date': e.parameters.date ,
+                'internet_message_id': e.parameters.internetMessageId,
+              }
+            }})
+        })
+
+    }
     return CardService.newActionResponseBuilder()
       .setNotification(CardService.newNotification()
         .setText("Mailoop a enregistré votre feedback"))

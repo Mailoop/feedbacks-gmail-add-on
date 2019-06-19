@@ -89,6 +89,7 @@ function buildSearchCard(opts) {
 
 
     var onVoteAction = createAction_('sendUserVote', {
+      onVoteCreate: JSON.stringify(!voted),
       date: opts.date,
       refName: behavior.ref_name,
       to: opts.to,

@@ -17,12 +17,12 @@
     "https://www.googleapis.com/auth/script.storage"
   ],
     "urlFetchWhitelist": [
-      "https://51eddb5e.ngrok.io/",
+      "https://5b6a3675.ngrok.io/",
       "https://app.mailoop.com/api/v2/",
       "https://staging.app.mailoop.com/api/v2/"
     ],
   "gmail": {
-    "name": "Mailoop",
+    "name": "Mailoop Staging",
     "logoUrl": "https://mailoop.blob.core.windows.net/testing/Assets/Images/mailoop_icon_2_64.png",
     "primaryColor": "#ED7D31",
     "secondaryColor": "#C01900",
