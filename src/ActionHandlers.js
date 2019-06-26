@@ -276,13 +276,15 @@ var ActionHandlers = {
       .setNavigation(CardService.newNavigation().popCard())
       .setNotification(
         CardService.newNotification()
-          .setText("Settings saved.")
+          .setText("Mailoop did save you're Smart Deconnexions Settings")
           .setType(CardService.NotificationType.INFO)
       )
       .build();
   },
 
   /**
+   * 
+   * https://accounts.google.com/signin/oauth/oauthchooseaccount?client_id=716902747725-uv0ndt7247s61j12950dmvmva2d6snmn.apps.googleusercontent.com&as=GT6ndu-heqL1puPvUv6hGw&destination=https%3A%2F%2Fadios.ai&approval_state=!ChQ1dlp3YmVYN3pDR3lXaC1PNG1zTRIfODc3dTRVV3Fwc2NUUUhVU2RlLXNqMHk3TmtRS3R4WQ%E2%88%99AJDr988AAAAAXQu4_USFOwXJax4ujZ1VD8wEnlxH_kvr&oauthriskyscope=1&xsrfsig=ChkAeAh8T6_0FyTsXK0z_RSjTSRifshP0ZPdEg5hcHByb3ZhbF9zdGF0ZRILZGVzdGluYXRpb24SBXNvYWN1Eg9vYXV0aHJpc2t5c2NvcGU&flowName=GeneralOAuthFlow
    * Resets the user settings to the defaults.
    * @param {Event} e - Event from Gmail
    * @return {ActionResponse}

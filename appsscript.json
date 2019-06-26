@@ -9,7 +9,6 @@
   },
   "exceptionLogging": "CLOUD",
   "oauthScopes": [
-    "https://www.googleapis.com/auth/gmail.addons.current.action.compose",
     "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
     "https://www.googleapis.com/auth/gmail.addons.execute",
     "https://www.googleapis.com/auth/userinfo.email",
@@ -22,7 +21,7 @@
       "https://staging.app.mailoop.com/api/v2/"
     ],
   "gmail": {
-    "name": "Mailoop Staging",
+    "name": "Mailoop Product Review",
     "logoUrl": "https://mailoop.blob.core.windows.net/testing/Assets/Images/mailoop_icon_2_64.png",
     "primaryColor": "#ED7D31",
     "secondaryColor": "#C01900",
