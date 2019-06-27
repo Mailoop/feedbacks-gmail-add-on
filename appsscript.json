@@ -18,7 +18,8 @@
     "urlFetchWhitelist": [
       "https://5b6a3675.ngrok.io/",
       "https://app.mailoop.com/api/v2/",
-      "https://staging.app.mailoop.com/api/v2/"
+      "https://staging.app.mailoop.com/api/v2/",
+      "https://staging.dashboard.mailoop.com/"
     ],
   "gmail": {
     "name": "Mailoop Product Review",
@@ -30,12 +31,19 @@
       "unconditional": {},
       "onTriggerFunction": "handleShowScheduler"
     }],
-    "universalActions": [{
-      "text": "Settings",
-      "runFunction": "handleShowSettings"
-    }],
+    "universalActions": [
+      {
+        "text": "Settings",
+        "runFunction": "handleShowSettings"
+      },
+      {
+        "text": "Dashboard",
+        "runFunction": "handleOpenDashboard"
+      }
+    ],
     "openLinkUrlPrefixes": [
-      "https://calendar.google.com"
+      "https://staging.dashboard.mailoop.com/",
+      "https://dashboard.mailoop.com/"
     ]
   }
 }

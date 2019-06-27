@@ -244,6 +244,33 @@ var ActionHandlers = {
       .build();
   },
 
+  openDashboard: function (e) {
+
+
+    /** 
+    var magicLink = UrlFetchApp.fetch(
+      'https://' + HOST + '/api/v2/magic_link', {
+        'method': 'post',
+        'contentType': 'application/json',
+        
+        'payload': JSON.stringify({
+          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+        })
+      })
+      
+      var url = "https://staging.dashboard.mailoop.com/me?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password
+       * **/
+
+    var url =  "https://staging.dashboard.mailoop.com/" ; 
+
+    return CardService.newActionResponseBuilder()
+      .setOpenLink(CardService.newOpenLink()
+        .setUrl(url)
+        .setOpenAs(CardService.OpenAs.FULL_SIZE)
+        .setOnClose(CardService.OnClose.NOTHING)
+      ).build()
+  },
+
   /**
    * Saves the user's settings.
    *

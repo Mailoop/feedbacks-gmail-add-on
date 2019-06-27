@@ -67,6 +67,11 @@ function handleShowSettings(event) {
   event.parameters.action = "showSettings";
   return dispatchActionInternal(event, universalActionErrorHandler);
 }
+
+function handleOpenDashboard(event) {
+  event.parameters.action = "openDashboard";
+  return dispatchActionInternal(event, universalActionErrorHandler);
+}
 /**
  * Entry point for secondary actions. Handles an user event and
  * invokes the corresponding action
