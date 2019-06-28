@@ -246,22 +246,12 @@ var ActionHandlers = {
 
   openDashboard: function (e) {
 
+    var magicLinkUrl = 'https://' + HOST + '/api/v2/magic_link?X-Google-Oauth-Token=' + ScriptApp.getOAuthToken()
 
-    /** 
-    var magicLink = UrlFetchApp.fetch(
-      'https://' + HOST + '/api/v2/magic_link', {
-        'method': 'post',
-        'contentType': 'application/json',
-        
-        'payload': JSON.stringify({
-          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
-        })
-      })
-      
-      var url = "https://staging.dashboard.mailoop.com/me?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password
-       * **/
+    var magicLink = JSON.parse(UrlFetchApp.fetch(magicLinkUrl)).magic_link;
 
-    var url =  "https://staging.dashboard.mailoop.com/" ; 
+    var url = "https://staging.dashboard.mailoop.com/?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password;
+
 
     return CardService.newActionResponseBuilder()
       .setOpenLink(CardService.newOpenLink()
