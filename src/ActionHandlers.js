@@ -18,6 +18,14 @@
  * @constant
  */
 
+ function createAction_(name, opt_params) {
+  var params = _.extend({}, opt_params);
+  params.action = name;
+  return CardService.newAction()
+    .setFunctionName("dispatchAction")
+    .setParameters(params);
+}
+
 var HOST = "staging.app.mailoop.com"
 
 var ActionHandlers = {
@@ -92,7 +100,7 @@ var ActionHandlers = {
         .setOpenLink(CardService.newOpenLink()
         .setUrl(productChoiceResponse.url)
         .setOpenAs(CardService.OpenAs.FULL_SIZE)
-        .setOnClose(CardService.OnClose.NOTHING)
+        .setOnClose(CardService.OnClose.RELOAD_ADD_ON)
         ).build()
       ) 
     }
