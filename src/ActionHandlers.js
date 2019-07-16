@@ -73,23 +73,38 @@ var ActionHandlers = {
   sendProductChoice: function(e) {
     var product = e.parameters.product
 
+    var productChoiceResponse= JSON.parse(
     UrlFetchApp.fetch(
       'https://' + HOST + '/api/v2/employees/me@me.com/choose_product', {
         'method': 'post',
         'contentType': 'application/json',
-
+        
         'payload': JSON.stringify({
           'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
           'product': product
         })
       })
+    )
 
-    return CardService.newActionResponseBuilder()
-      .setNotification(CardService.newNotification()
+    if (productChoiceResponse.action == "REDIRECT") {
+      return(
+        CardService.newActionResponseBuilder()
+        .setOpenLink(CardService.newOpenLink()
+        .setUrl(productChoiceResponse.url)
+        .setOpenAs(CardService.OpenAs.FULL_SIZE)
+        .setOnClose(CardService.OnClose.NOTHING)
+        ).build()
+      ) 
+    }
+
+    else {
+      return(
+        CardService.newActionResponseBuilder()
+        .setNotification(CardService.newNotification()
         .setText("Product choosen"))
-      .build();
-
-
+        .build()
+      )
+    }
   },
   sendUserVote: function(e) {
 
