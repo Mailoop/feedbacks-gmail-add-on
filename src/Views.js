@@ -31,7 +31,6 @@ var behaviorIconUrl = function(behaviorName) {
 
 function buildProductChoiceCard(opts) {
 
-
   var preferenceSection = CardService.newCardSection()
 
   preferenceSection.addWidget(
@@ -39,17 +38,17 @@ function buildProductChoiceCard(opts) {
       .addButton(
         CardService.newTextButton()
           .setText("Feedbacks")
-          .setOnClickAction(createAction_("saveSettings", {}))
+          .setOnClickAction(createAction_("sendProductChoice", {product: "feedbacks"}))
       )
       .addButton(
         CardService.newTextButton()
           .setText("Analytics")
-          .setOnClickAction(createAction_("grantSmartDeconexion", {}))
+          .setOnClickAction(createAction_("sendProductChoice", {product: "analytics"}))
       )
       .addButton(
         CardService.newTextButton()
           .setText("Smart deconnexion")
-          .setOnClickAction(createAction_("grantSmartDeconexion", {}))
+          .setOnClickAction(createAction_("sendProductChoice", {product: "smartdeconnexion"}))
       )
   );
 

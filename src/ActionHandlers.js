@@ -70,7 +70,27 @@ var ActionHandlers = {
     return [card];
   },
 
+  sendProductChoice: function(e) {
+    var product = e.parameters.product
 
+    UrlFetchApp.fetch(
+      'https://' + HOST + '/api/v2/employees/me@me.com/choose_product', {
+        'method': 'post',
+        'contentType': 'application/json',
+
+        'payload': JSON.stringify({
+          'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+          'product': product
+        })
+      })
+
+    return CardService.newActionResponseBuilder()
+      .setNotification(CardService.newNotification()
+        .setText("Product choosen"))
+      .build();
+
+
+  },
   sendUserVote: function(e) {
 
     if (e.parameters.onVoteCreate) {
