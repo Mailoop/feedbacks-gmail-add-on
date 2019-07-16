@@ -26,9 +26,42 @@
 
 var behaviorIconUrl = function(behaviorName) {
   return('https://mailoop.blob.core.windows.net/static/Assets/Images/' + behaviorName + '_64.png')
-}  
+} 
+
+
+function buildProductChoiceCard(opts) {
+
+
+  var preferenceSection = CardService.newCardSection()
+
+  preferenceSection.addWidget(
+    CardService.newButtonSet()
+      .addButton(
+        CardService.newTextButton()
+          .setText("Feedbacks")
+          .setOnClickAction(createAction_("saveSettings", {}))
+      )
+      .addButton(
+        CardService.newTextButton()
+          .setText("Analytics")
+          .setOnClickAction(createAction_("grantSmartDeconexion", {}))
+      )
+      .addButton(
+        CardService.newTextButton()
+          .setText("Smart deconnexion")
+          .setOnClickAction(createAction_("grantSmartDeconexion", {}))
+      )
+  );
+
+  return CardService.newCardBuilder()
+    .setHeader(CardService.newCardHeader().setTitle("Choose you're product"))
+    .addSection(preferenceSection)
+    .build();
+
+}
   
-function buildSearchCard(opts) {
+
+function buildFeedbakcsCard(opts) {
 
   var behaviors = JSON.parse(opts.behaviors).filter(function (vote) {
     return (vote.category === "message");
@@ -47,9 +80,6 @@ function buildSearchCard(opts) {
             .setFunctionName("handleSwitchChange")))
     )
 
-  const iconUrl = "https://cdn2.iconfinder.com/data/icons/medical-services-2/256/Health_Tests-512.png"
-
-
   const positiveBehavior = behaviors.filter( function(behavior) {
     return(behavior.family === 1);  
   });
@@ -65,28 +95,15 @@ function buildSearchCard(opts) {
   var positiveFeedbacksSections = []
   _.each(positiveBehavior, function (behavior) {
     var vote = (votes.filter(function (vote) {
-      Logger.log("")
-      Logger.log(Math.floor(vote.behavior_id).toString(10))
-      Logger.log(Math.floor(behavior.id).toString(10))
-      Logger.log(Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10))
       return (Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10));
     }))
-    Logger.log("")
-    Logger.log("vote")
-    Logger.log(vote)
     var voted
 
-    Logger.log(vote)
     if (vote.length > 0 ) {
       voted = true
     } else {
       voted = false
     }
-    Logger.log("voted")
-    Logger.log(voted)
-
-
-
 
     var onVoteAction = createAction_('sendUserVote', {
       onVoteCreate: JSON.stringify(!voted),
@@ -102,7 +119,6 @@ function buildSearchCard(opts) {
       .addWidget(CardService.newKeyValue()
         .setIconUrl(behaviorIconUrl(behavior.ref_name))
         .setContent(behavior.ref_name)
-        //.setOnClickAction(onVoteAction)
         .setSwitch(CardService.newSwitch()
           .setSelected(voted)
           .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name  )
@@ -124,7 +140,7 @@ function buildSearchCard(opts) {
           .setContent(behavior.ref_name)
           //.setOnClickAction(onVoteAction)
           .setSwitch(CardService.newSwitch()
-            .setFieldName("form_input_switch_key")
+            .setFieldName("form_input_switch_ key")
             .setValue("form_input_switch_value")
             .setOnChangeAction(onVoteAction))
         )
@@ -150,13 +166,6 @@ function buildSearchCard(opts) {
         )
     )
   })
-
-
-
-  
-
-
-
 
   // <= for example
 
@@ -337,6 +346,11 @@ function buildSettingsCard(opts) {
         CardService.newTextButton()
           .setText("Save")
           .setOnClickAction(createAction_("saveSettings", {}))
+      )
+      .addButton(
+        CardService.newTextButton()
+          .setText("Grant")
+          .setOnClickAction(createAction_("grantSmartDeconexion", {}))
       )
   );
 

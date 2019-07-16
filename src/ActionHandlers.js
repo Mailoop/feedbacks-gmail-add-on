@@ -65,7 +65,8 @@ var ActionHandlers = {
         timezone: "Europe/Paris",
       }
     };
-    var card = buildSearchCard(opts);
+    //var card = buildFeedbakcsCard(opts);
+    var card = buildProductChoiceCard();
     return [card];
   },
 
@@ -253,6 +254,8 @@ var ActionHandlers = {
     var url = "https://staging.dashboard.mailoop.com/?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password;
 
 
+
+    // https://region-normandie.dashboard.mailoop.com/?email=ZWRvdWFyZC5ldGFuY2VsaW5AbWFpbG9vcC5vbm1pY3Jvc29mdC5jb20=&temporary_password=1975591e-b241-419e-af8c-a1f7fd777167
     return CardService.newActionResponseBuilder()
       .setOpenLink(CardService.newOpenLink()
         .setUrl(url)
@@ -267,6 +270,15 @@ var ActionHandlers = {
    * @param {Event} e - Event from Gmail
    * @return {ActionResponse}
    */
+  grantSmartDeconexion: function(e) {
+    var url = "https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/gmail.metadata%20https://www.googleapis.com/auth/gmail.modify%20https://www.googleapis.com/auth/gmail.labels%20https://www.googleapis.com/auth/gmail.settings.basic%20https://www.googleapis.com/auth/calendar&access_type=offline&include_granted_scopes=true&redirect_uri=https://app.mailoop.com/google/personal/authorize&response_type=code&client_id=152396156288-m6e547prq6jebkv9mk1cmacc1mjs2so0.apps.googleusercontent.com"
+    return CardService.newActionResponseBuilder()
+      .setOpenLink(CardService.newOpenLink()
+        .setUrl(url)
+        .setOpenAs(CardService.OpenAs.FULL_SIZE)
+        .setOnClose(CardService.OnClose.NOTHING)
+      ).build()
+  },
   saveSettings: function(e) {
     var settings = {
       startHour: parseInt(e.formInput.start),
