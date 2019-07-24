@@ -1,17 +1,3 @@
-// Copyright 2017 Google Inc. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 /**
  * Collection of functions to handle user interactions with the add-on.
  *
@@ -37,6 +23,16 @@ var ActionHandlers = {
    */
 
   showSearchForm: function (e) {
+
+    var url = 'https://' + HOST + '/api/v2/employees/me@me.com/status?X-Google-Oauth-Token=' + ScriptApp.getOAuthToken()
+    
+    var rawStatus = UrlFetchApp.fetch(url)
+    var status = JSON.parse(rawStatus)
+
+    if (status.choosen_products.length === 0) {
+      return ([buildProductChoiceCard()])
+    }
+
     var settings = getSettingsForUser();
     var message = getCurrentMessage(e);
     var people = extractRecipients(message, settings.emailBlacklist);
@@ -66,6 +62,7 @@ var ActionHandlers = {
       e: JSON.stringify(e),
       votes : votes,
       behaviors: behaviors,
+      employee: rawStatus,
 
       state: {
         messageId: e.messageId,
@@ -73,9 +70,64 @@ var ActionHandlers = {
         timezone: "Europe/Paris",
       }
     };
-    //var card = buildFeedbakcsCard(opts);
-    var card = buildProductChoiceCard();
+    var card = buildFeedbakcsCard(opts);
     return [card];
+  },
+
+  toogleSmartDeconnexion: function (e) {
+    Loggere
+    var enabled = e.parameters.enabled
+
+    var productChoiceResponse = JSON.parse(
+      UrlFetchApp.fetch(
+        'https://' + HOST + '/api/v2/employees/me@me.com/set_smart_deconnexion_enabled', {
+          'method': 'post',
+          'contentType': 'application/json',
+
+          'payload': JSON.stringify({
+            'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+            'smart_deconnexion_enabled': enabled
+          })
+        })
+    )
+
+
+    if (productChoiceResponse.metadata.action == "CHOOSE_PRODUCT") {
+
+
+      var productChoiceResponse = JSON.parse(
+        UrlFetchApp.fetch(
+          'https://' + HOST + '/api/v2/employees/me@me.com/choose_product', {
+            'method': 'post',
+            'contentType': 'application/json',
+
+            'payload': JSON.stringify({
+              'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
+              'product': productChoiceResponse.metadata.product_name
+            })
+          })
+      )
+
+      if (productChoiceResponse.action == "REDIRECT") {
+        return (
+          CardService.newActionResponseBuilder()
+            .setOpenLink(CardService.newOpenLink()
+              .setUrl(productChoiceResponse.url)
+              .setOpenAs(CardService.OpenAs.FULL_SIZE)
+              .setOnClose(CardService.OnClose.RELOAD_ADD_ON)
+            ).build()
+        )
+      }
+      
+    else {
+      return (
+        CardService.newActionResponseBuilder()
+          .setNotification(CardService.newNotification()
+            .setText("Smart Deconnexion set to enabled"))
+          .build()
+      )
+    }} 
+
   },
 
   sendProductChoice: function(e) {
@@ -276,10 +328,18 @@ var ActionHandlers = {
    * @return {UniversalActionResponse}
    */
   showSettings: function(e) {
+
+    var url = 'https://' + HOST + '/api/v2/employees/me@me.com/status?X-Google-Oauth-Token=' + ScriptApp.getOAuthToken()
+
+    var rawStatus = UrlFetchApp.fetch(url)
+    var status = JSON.parse(rawStatus)
+
+
     var settings = getSettingsForUser();
     var card = buildSettingsCard({
-      startHour: settings.startHour,
-      endHour: settings.endHour,
+      simpleWorkingTime: status.simpleWorkingTime,
+      startHour: status.start_working_time,
+      endHour: status.end_working_time,
       timezone: settings.timezone,
       country: settings.country,
     });

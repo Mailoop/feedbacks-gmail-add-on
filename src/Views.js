@@ -1,16 +1,4 @@
-// Copyright 2017 Google Inc. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+
 
 /**
  * Builds a card that displays the search options for scheduling a meeting.
@@ -62,6 +50,10 @@ function buildProductChoiceCard(opts) {
 
 function buildFeedbakcsCard(opts) {
 
+  var employee = JSON.parse(opts.employee)
+
+
+
   var behaviors = JSON.parse(opts.behaviors).filter(function (vote) {
     return (vote.category === "message");
   })
@@ -75,9 +67,11 @@ function buildFeedbakcsCard(opts) {
         .setSwitch(CardService.newSwitch()
           .setFieldName("form_input_switch_key")
           .setValue("form_input_switch_value")
-          .setOnChangeAction(CardService.newAction()
-            .setFunctionName("handleSwitchChange")))
-    )
+          .setOnChangeAction(
+            createAction_("toogleSmartDeconnexion", 
+              { enabled: JSON.stringify(!employee.smart_deconnexion_enabled) }
+            )
+    )))
 
   const positiveBehavior = behaviors.filter( function(behavior) {
     return(behavior.family === 1);  
@@ -315,11 +309,21 @@ function buildConfirmationCard(opts) {
  */
 function buildSettingsCard(opts) {
 
+  throw opts.startHour * 60 % 60
+
   var preferenceSection = CardService.newCardSection()
     .addWidget(
-      createTimeSelectDropdown_("Start of day", "start", opts.startHour)
+      createTimeSelectDropdown_("Start of day", "start", Math.floor(opts.startHour))
     )
-    .addWidget(createTimeSelectDropdown_("End of day", "end", opts.endHour))
+    .addWidget(
+      hourQuarterSelectDropdown_("Minutes", "startMinute", opts.startHour * 60 % 60) 
+    )
+    .addWidget(
+      createTimeSelectDropdown_("End of day", "end", opts.endHour / 60 % 60)
+    )
+    .addWidget(
+      hourQuarterSelectDropdown_("Minutes", "endMinutes", Math.floor(opts.endHour * 60 % 60))
+    )
       
     .addWidget(
       CardService.newSelectionInput()
@@ -468,6 +472,22 @@ function createTimeSelectDropdown_(label, name, defaultValue) {
       .minutes(0)
       .format("hh:mm a");
     widget.addItem(text, i, i == defaultValue);
+  }
+  return widget;
+}
+
+function hourQuarterSelectDropdown_(label, name, defaultValue) {
+
+  var roundedDefaultValue = Math.round(defaultValue / 15) * 15
+  var widget = CardService.newSelectionInput()
+    .setTitle(label)
+    .setFieldName(name)
+    .setType(CardService.SelectionInputType.DROPDOWN);
+
+  for (var i = 0; i < 4; ++i) {
+    var value = i * 15
+    var text = value.toString()
+    widget.addItem(text, value, value == roundedDefaultValue);
   }
   return widget;
 }
