@@ -20,7 +20,9 @@
       "https://5b6a3675.ngrok.io/",
       "https://app.mailoop.com/api/v2/",
       "https://staging.app.mailoop.com/api/v2/",
-      "https://staging.dashboard.mailoop.com/"
+      "https://staging.dashboard.mailoop.com/",
+      "https://app.mailoop.com/api/v2/",
+      "https://dashboard.mailoop.com/"
     ],
   "gmail": {
     "name": "Mailoop Product Review",

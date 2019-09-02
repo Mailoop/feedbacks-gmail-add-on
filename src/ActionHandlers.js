@@ -12,7 +12,7 @@
     .setParameters(params);
 }
 
-var HOST = "staging.app.mailoop.com"
+var HOST = "app.mailoop.com"
 
 var ActionHandlers = {
   /**
@@ -338,8 +338,8 @@ var ActionHandlers = {
     var settings = getSettingsForUser();
     var card = buildSettingsCard({
       simpleWorkingTime: status.simpleWorkingTime,
-      startHour: status.start_working_time,
-      endHour: status.end_working_time,
+      startHour: JSON.stringify(status.start_working_time),
+      endHour: JSON.stringify(status.end_working_time),
       timezone: settings.timezone,
       country: settings.country,
     });
@@ -354,7 +354,7 @@ var ActionHandlers = {
 
     var magicLink = JSON.parse(UrlFetchApp.fetch(magicLinkUrl)).magic_link;
 
-    var url = "https://staging.dashboard.mailoop.com/?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password;
+    var url = "https://dashboard.mailoop.com/?email=" + magicLink.email + "&temporary_password=" + magicLink.temporary_password;
 
 
 

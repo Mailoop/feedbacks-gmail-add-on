@@ -124,17 +124,35 @@ function buildFeedbakcsCard(opts) {
 
   var neutralFeedbacksSections = []
   _.each(neutralBehavior, function (behavior) {
-    var onVoteAction = createAction_('sendUserVote')
+    var vote = (votes.filter(function (vote) {
+      return (Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10));
+    }))
+    var voted
+
+    if (vote.length > 0) {
+      voted = true
+    } else {
+      voted = false
+    }
+
+    var onVoteAction = createAction_('sendUserVote', {
+      onVoteCreate: JSON.stringify(!voted),
+      date: opts.date,
+      refName: behavior.ref_name,
+      to: opts.to,
+      internetMessageId: opts.internetMessageId,
+      from: opts.from,
+    })
 
     neutralFeedbacksSections.push(
       CardService.newCardSection()
         .addWidget(CardService.newKeyValue()
           .setIconUrl(behaviorIconUrl(behavior.ref_name))
           .setContent(behavior.ref_name)
-          //.setOnClickAction(onVoteAction)
           .setSwitch(CardService.newSwitch()
-            .setFieldName("form_input_switch_ key")
-            .setValue("form_input_switch_value")
+            .setSelected(voted)
+            .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name)
+            .setValue(voted)
             .setOnChangeAction(onVoteAction))
         )
     )
@@ -144,17 +162,35 @@ function buildFeedbakcsCard(opts) {
 
   var negativeFeedbacksSections = []
   _.each(negativeBehavior, function (behavior) {
-    var onVoteAction = createAction_('sendUserVote')
+    var vote = (votes.filter(function (vote) {
+      return (Math.floor(vote.behavior_id).toString(10) === Math.floor(behavior.id).toString(10));
+    }))
+    var voted
+
+    if (vote.length > 0) {
+      voted = true
+    } else {
+      voted = false
+    }
+
+    var onVoteAction = createAction_('sendUserVote', {
+      onVoteCreate: JSON.stringify(!voted),
+      date: opts.date,
+      refName: behavior.ref_name,
+      to: opts.to,
+      internetMessageId: opts.internetMessageId,
+      from: opts.from,
+    })
 
     negativeFeedbacksSections.push(
       CardService.newCardSection()
         .addWidget(CardService.newKeyValue()
           .setIconUrl(behaviorIconUrl(behavior.ref_name))
-          .setContent(behavior.translations.fr.name)
-          //.setOnClickAction(onVoteAction)
+          .setContent(behavior.ref_name)
           .setSwitch(CardService.newSwitch()
-            .setFieldName("form_input_switch_key")
-            .setValue("form_input_switch_value")
+            .setSelected(voted)
+            .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name)
+            .setValue(voted)
             .setOnChangeAction(onVoteAction))
         )
     )
@@ -308,21 +344,23 @@ function buildConfirmationCard(opts) {
  * @return {Card}
  */
 function buildSettingsCard(opts) {
-
-  throw opts.startHour * 60 % 60
+  var start = parseFloat(opts.startHour)
+  var end = parseFloat(opts.endHour)
+  Logger.log(opts)
+  Logger.log(opts.startHour)
 
   var preferenceSection = CardService.newCardSection()
     .addWidget(
-      createTimeSelectDropdown_("Start of day", "start", Math.floor(opts.startHour))
+      createTimeSelectDropdown_("Start of day", "start", Math.floor(start))
     )
     .addWidget(
-      hourQuarterSelectDropdown_("Minutes", "startMinute", opts.startHour * 60 % 60) 
+      hourQuarterSelectDropdown_("Minutes", "startMinute", start * 60 % 60) 
     )
     .addWidget(
-      createTimeSelectDropdown_("End of day", "end", opts.endHour / 60 % 60)
+      createTimeSelectDropdown_("End of day", "end", end / 60 % 60)
     )
     .addWidget(
-      hourQuarterSelectDropdown_("Minutes", "endMinutes", Math.floor(opts.endHour * 60 % 60))
+      hourQuarterSelectDropdown_("Minutes", "endMinutes", Math.floor(end * 60 % 60))
     )
       
     .addWidget(
