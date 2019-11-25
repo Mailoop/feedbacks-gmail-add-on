@@ -103,7 +103,8 @@ var ActionHandlers = {
 
             'payload': JSON.stringify({
               'X-Google-Oauth-Token': ScriptApp.getOAuthToken(),
-              'product': productChoiceResponse.metadata.product_name
+              'product': productChoiceResponse.metadata.product_name,
+              
             })
           })
       )

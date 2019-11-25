@@ -206,7 +206,7 @@ function buildFeedbakcsCard(opts) {
   }
 
   cardBuilder = CardService.newCardBuilder()
-  cardBuilder.addSection(smartDeconnexionSection)
+  //cardBuilder.addSection(smartDeconnexionSection)
 
   cardBuilder.addSection(
     CardService.newCardSection().addWidget(
