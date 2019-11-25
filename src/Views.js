@@ -208,27 +208,31 @@ function buildFeedbakcsCard(opts) {
   cardBuilder = CardService.newCardBuilder()
   //cardBuilder.addSection(smartDeconnexionSection)
 
+  if (positiveBehavior.length > 0) {
   cardBuilder.addSection(
     CardService.newCardSection().addWidget(
       CardService.newTextParagraph().setText("Positif 🙂")
       )
-  )
-  addSections(cardBuilder, positiveFeedbacksSections)
+      )
+      addSections(cardBuilder, positiveFeedbacksSections)
+  }
 
-
-  cardBuilder.addSection(
-    CardService.newCardSection().addWidget(
-      CardService.newTextParagraph().setText("Neutre 😐")
+  if (neutralBehavior.length > 0) {
+    cardBuilder.addSection(
+      CardService.newCardSection().addWidget(
+        CardService.newTextParagraph().setText("Neutre 😐")
+      )
     )
-  )
-  addSections(cardBuilder, neutralFeedbacksSections)
+    addSections(cardBuilder, neutralFeedbacksSections)
+  }
 
-
-  cardBuilder.addSection(
-    CardService.newCardSection().addWidget(
-      CardService.newTextParagraph().setText("Negatif 🙁")
-    )
+  if (negativeBehavior.length > 0) {
+    cardBuilder.addSection(
+      CardService.newCardSection().addWidget(
+        CardService.newTextParagraph().setText("Negatif 🙁")
+      )
   )
+  }
 
   addSections(cardBuilder, negativeFeedbacksSections)
   return cardBuilder.build();
