@@ -24,7 +24,9 @@ var ActionHandlers = {
 
   showSearchForm: function (e) {
 
-    var url = 'https://' + HOST + '/api/v2/employees/me@me.com/status?X-Google-Oauth-Token=' + ScriptApp.getOAuthToken()
+    const xGoogleParam = 'X-Google-Oauth-Token=' + ScriptApp.getOAuthToken()
+
+    var url = 'https://' + HOST + '/api/v2/employees/me@me.com/status?' + xGoogleParam
     
     var rawStatus = UrlFetchApp.fetch(url)
     var status = JSON.parse(rawStatus)
@@ -42,7 +44,7 @@ var ActionHandlers = {
 
     var base64InternetMessageId = Utilities.base64Encode(internetMessageId)
 
-    var behaviorsUrl = 'https://'+ HOST +'/api/v2/behaviors_groups/default_onboarding'
+    var behaviorsUrl = 'https://'+ HOST +'/api/v2/company/behaviors?' + xGoogleParam
     var behaviors = UrlFetchApp.fetch(behaviorsUrl)
 
     var url = 'https://' + HOST +'/api/v2/emails/' + 

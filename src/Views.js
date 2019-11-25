@@ -13,8 +13,8 @@
  */
 
 var behaviorIconUrl = function(behaviorName) {
-  return('https://mailoop.blob.core.windows.net/static/Assets/Images/' + behaviorName + '_64.png')
-} 
+  return('https://' + HOST + '/assets/feedbacks/icons/' + behaviorName + '_64.png')
+}
 
 
 function buildProductChoiceCard(opts) {
@@ -111,7 +111,7 @@ function buildFeedbakcsCard(opts) {
       CardService.newCardSection()
       .addWidget(CardService.newKeyValue()
         .setIconUrl(behaviorIconUrl(behavior.ref_name))
-        .setContent(behavior.ref_name)
+        .setContent(behavior.translations.fr.name)
         .setSwitch(CardService.newSwitch()
           .setSelected(voted)
           .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name  )
@@ -148,7 +148,7 @@ function buildFeedbakcsCard(opts) {
       CardService.newCardSection()
         .addWidget(CardService.newKeyValue()
           .setIconUrl(behaviorIconUrl(behavior.ref_name))
-          .setContent(behavior.ref_name)
+          .setContent(behavior.translations.fr.name)
           .setSwitch(CardService.newSwitch()
             .setSelected(voted)
             .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name)
@@ -186,7 +186,7 @@ function buildFeedbakcsCard(opts) {
       CardService.newCardSection()
         .addWidget(CardService.newKeyValue()
           .setIconUrl(behaviorIconUrl(behavior.ref_name))
-          .setContent(behavior.ref_name)
+          .setContent(behavior.translations.fr.name)
           .setSwitch(CardService.newSwitch()
             .setSelected(voted)
             .setFieldName("V16:votableId:" + opts.internetMessageId + "behaviorId:" + behavior.ref_name)
@@ -211,7 +211,7 @@ function buildFeedbakcsCard(opts) {
   if (positiveBehavior.length > 0) {
   cardBuilder.addSection(
     CardService.newCardSection().addWidget(
-      CardService.newTextParagraph().setText("Positif 🙂")
+      CardService.newTextParagraph().setText("<b>Positif</b> 🙂")
       )
       )
       addSections(cardBuilder, positiveFeedbacksSections)
@@ -220,7 +220,7 @@ function buildFeedbakcsCard(opts) {
   if (neutralBehavior.length > 0) {
     cardBuilder.addSection(
       CardService.newCardSection().addWidget(
-        CardService.newTextParagraph().setText("Neutre 😐")
+        CardService.newTextParagraph().setText("<b>Neutre</b> 😐")
       )
     )
     addSections(cardBuilder, neutralFeedbacksSections)
@@ -229,7 +229,7 @@ function buildFeedbakcsCard(opts) {
   if (negativeBehavior.length > 0) {
     cardBuilder.addSection(
       CardService.newCardSection().addWidget(
-        CardService.newTextParagraph().setText("Negatif 🙁")
+        CardService.newTextParagraph().setText("<b>Negatif</b> 🙁")
       )
   )
   }
